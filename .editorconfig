@@ -1,0 +1,27 @@
+# EditorConfig 官方网站: https://EditorConfig.org
+
+# 表示这是根配置文件，不要往上层文件夹找了
+root = true
+
+# 对所有文件生效的通用设置
+[*]
+charset = utf-8
+indent_style = space          # RN 社区习惯用空格
+indent_size = 2               # RN 标准缩进是 2 格
+end_of_line = lf              # 强制使用 Unix 换行符 (LF)，避免 Windows/Mac 冲突
+insert_final_newline = true   # 文件末尾强制留一空行
+trim_trailing_whitespace = true # 自动删掉行尾多余空格
+
+# 针对 JS/TS/JSON/YAML 文件（RN 开发的核心）
+[*.{js,jsx,ts,tsx,json,yml,yaml}]
+indent_size = 2
+
+# 针对 Markdown 文件
+[*.md]
+trim_trailing_whitespace = false # MD 语法中有时靠行尾空格换行，所以关掉
+
+# 针对 Windows 原生开发（如果你在做 React Native for Windows）
+[*.{sln,vcxproj,props}]
+indent_style = space
+indent_size = 4               # C++ 习惯 4 格缩进
+end_of_line = crlf            # Windows 项目有时需要 CRLF
