@@ -12,7 +12,7 @@ export default function Layout() {
         headerTitleStyle: {
           fontWeight: 'bold',
         },
-        title: '音乐 App',
+        title: 'Online Music',
         headerLeft: () => (
           <View style={{ marginLeft: 10, flexDirection: 'row', alignItems: 'center' }}>
             <Text style={{ fontSize: 24 }}>🎵</Text>

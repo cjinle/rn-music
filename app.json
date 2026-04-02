@@ -22,9 +22,11 @@
       "predictiveBackGestureEnabled": false,
       "permissions": [
         "android.permission.RECORD_AUDIO",
-        "android.permission.MODIFY_AUDIO_SETTINGS"
+        "android.permission.MODIFY_AUDIO_SETTINGS",
+        "INTERNET"
       ],
-      "package": "io.qzz.cjinle.music"
+      "package": "io.qzz.cjinle.music",
+      "versionCode": 1
     },
     "web": {
       "output": "static",
@@ -44,7 +46,8 @@
           }
         }
       ],
-      "expo-audio"
+      "expo-audio",
+      "expo-asset"
     ],
     "experiments": {
       "typedRoutes": true,
