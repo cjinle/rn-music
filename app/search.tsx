@@ -6,16 +6,12 @@ class Search {
 
   private baseUrl: string = 'https://api.xcvts.cn/api/music/migu';
 
-  // 1. 定义一个私有的静态变量来保存实例
   private static instance: Search | null = null;
 
-  // 2. 私有化构造函数，防止外部通过 new Search() 创建新实例
   private constructor() {
-    // 这里可以初始化搜索相关的配置
-    console.log("Search 实例已初始化");
+    console.log("Search init.");
   }
 
-  // 3. 提供一个静态方法供外部获取唯一实例
   static getInstance(): Search {
     if (!Search.instance) {
       Search.instance = new Search();
@@ -42,13 +38,13 @@ class Search {
 
   public async getMiguSongDetail(name: string): Promise<Song|null> {
     interface Detail {
-      code: number,
-      title: string,
-      singer: string,
-      cover: string,
-      lrc_url: string,
-      link: string,
-      music_url: string,
+      code: number;
+      title: string;
+      singer: string;
+      cover: string;
+      lrc_url: string;
+      link: string;
+      music_url: string;
     };
 
     try {
@@ -60,9 +56,11 @@ class Search {
       }
 
       return {
-        id: '',
+        id: Math.random().toString(),
         title: detail.title,
         url: detail.music_url,
+        singer: detail.singer,
+        cover: detail.cover,
       } as Song;
     } catch (error) {
       console.log(`get song ${name} err`, error);

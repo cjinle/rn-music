@@ -2,9 +2,14 @@ import React, { useEffect, useRef, useState } from 'react';
 import {
   ActivityIndicator,
   FlatList,
+  Image,
   LayoutChangeEvent,
   Pressable,
-  StyleSheet, Text, TextInput, TouchableOpacity, View
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from 'react-native';
 // 导入最新的 expo-audio
 import { useAudioPlayer, useAudioPlayerStatus } from 'expo-audio';
@@ -21,14 +26,11 @@ const MusicApp: React.FC = () => {
   const keyword = useRef<string>('王菲');
 
 
-  // 1. 初始化播放器实例
   const player = useAudioPlayer();
-  // 2. 监听播放器状态（包含时长、进度、是否播放中）
   const status = useAudioPlayerStatus(player);
 
   const handlePlay = async (song: Song) => {
     setCurrentSong(song);
-    // 替换新音源并播放
     player.replace(song.url);
     await player.play();
   };
@@ -111,10 +113,8 @@ const MusicApp: React.FC = () => {
           disabled={loading} // 加载中禁用点击
         >
           {loading ? (
-            // 这里可以用 ActivityIndicator（RN内置转圈组件）
             <ActivityIndicator color="#fff" size="small" />
           ) : (
-            // 这里放搜索图标，如果没有图标库可以用 emoji 代替 🔍
             <Text style={styles.searchButtonText}>🔍</Text>
           )}
         </TouchableOpacity>
@@ -122,15 +122,28 @@ const MusicApp: React.FC = () => {
 
       <FlatList
         data={songs ? songs.filter(s => s.title) : []}
-        keyExtractor={(item, index) => `song-${index}`}
+        keyExtractor={(_, index) => `song-${index}`}
         contentContainerStyle={{ paddingBottom: 100 }}
         renderItem={({ item }) => (
           <View style={styles.listItem}>
-            <Text>{item.title}</Text>
+            <Image
+              source={item.cover ? { uri: item.cover } : require('../assets/images/react-logo.png')}
+              style={styles.albumCover}
+            />
+
+            <View style={styles.textContainer}>
+              <Text style={styles.songTitle} numberOfLines={1}>
+                {item.title}
+              </Text>
+              <Text style={styles.singerName} numberOfLines={1}>
+                {item.singer || '未知歌手'}
+              </Text>
+            </View>
+
             <TouchableOpacity style={styles.playButton} onPress={() => handlePlay(item)}>
               <Text style={{ color: '#fff' }}>播放</Text>
             </TouchableOpacity>
-          </View>
+            </View>
         )}
       />
 
@@ -140,12 +153,10 @@ const MusicApp: React.FC = () => {
           <View style={{ flex: 1 }}>
             <Text style={{ fontWeight: 'bold' }}>{currentSong?.title}</Text>
 
-            {/* 使用预定义的字符串变量 */}
             <Text style={{ fontSize: 12, color: '#666' }}>
               {currentTimeStr} / {durationStr}
             </Text>
 
-            {/* 进度条交互区域 */}
             <Pressable
               // 如果时长还没获取到，就不允许点击跳转
               disabled={!status.duration || isNaN(status.duration)}
@@ -202,8 +213,48 @@ const styles = StyleSheet.create({
   searchButtonText: {
     fontSize: 20, // 放大图标显示
   },
-  listItem: { flexDirection: 'row', justifyContent: 'space-between', padding: 15, backgroundColor: '#fff', marginBottom: 10, borderRadius: 8 },
-  playButton: { backgroundColor: '#007AFF', padding: 8, borderRadius: 5 },
+
+  listItem: {
+    flexDirection: 'row', // 横向排列
+    alignItems: 'center', // 垂直居中
+    backgroundColor: '#fff',
+    padding: 12,
+    marginBottom: 10,
+    borderRadius: 12,
+    // 阴影
+    boxShadow: '0px 2px 5px rgba(0,0,0,0.05)',
+    elevation: 2,
+  },
+  albumCover: {
+    width: 50,
+    height: 50,
+    borderRadius: 6,
+    marginRight: 12,
+    backgroundColor: '#eee', // 图片加载前的占位色
+  },
+  textContainer: {
+    flex: 1, // 关键：占据中间所有空间
+    justifyContent: 'center',
+  },
+  songTitle: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#333',
+    marginBottom: 4,
+  },
+  singerName: {
+    fontSize: 13,
+    color: '#888', // 比标题颜色浅
+  },
+  playButton: {
+    backgroundColor: '#007AFF',
+    paddingVertical: 6,
+    paddingHorizontal: 15,
+    borderRadius: 20, // 圆角矩形按钮
+    marginLeft: 10,
+  },
+
+
   bottomBar: {
     position: 'absolute',
     bottom: 0,
