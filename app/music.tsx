@@ -143,7 +143,7 @@ const MusicApp: React.FC = () => {
             <TouchableOpacity style={styles.playButton} onPress={() => handlePlay(item)}>
               <Text style={{ color: '#fff' }}>播放</Text>
             </TouchableOpacity>
-            </View>
+          </View>
         )}
       />
 

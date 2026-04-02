@@ -4,6 +4,8 @@ This is an [Expo](https://expo.dev) project created with [`create-expo-app`](htt
 
 ![Logo](./index.png)
 
+[Demo](https://music.cjinle.qzz.io)
+
 ## Get started
 
 1. Install dependencies
