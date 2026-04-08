@@ -21,9 +21,9 @@ npx expo export --platform web
 
 ```
 
-## Reset project
+## Build android 
 
 
 ```bash
-npm run reset-project
+eas build --platform android --profile production
 ```

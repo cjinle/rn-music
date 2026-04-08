@@ -3,9 +3,9 @@ import { StyleSheet, Text, View } from 'react-native';
 
 const TAG_CONFIG: Record<string, { bg: string; text: string }> = {
   '咪咕': { bg: '#FFEBF2', text: '#E6005C' },
-  'Hi-Res': { bg: '#FFF3E0', text: '#FF9800' },
+  'QQ': { bg: '#E6F8F0', text: '#31C27C' },
   '网易云': { bg: '#FBECEC', text: '#D33030' },
-  '独家': { bg: '#E3F2FD', text: '#2196F3' },
+  '酷我': { bg: '#FFF9E6', text: '#A37E00' },
   'default': { bg: '#F5F5F5', text: '#9E9E9E' },
 };
 

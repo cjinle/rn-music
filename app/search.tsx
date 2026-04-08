@@ -1,4 +1,5 @@
 
+// import { searchWithKeyword } from './qq-music-api';
 import { Song } from './types';
 
 
@@ -109,11 +110,37 @@ class Search {
     return [] as Song[];
   }
 
+  public async getKuwoSongs(keyword: string): Promise<Song[]> {
+    try {
+      const url = `https://kw-api.cenguigui.cn/?name=${encodeURIComponent(keyword)}&page=1&limit=10`;
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error(`network error: ${response.status}`);
+      }
+      const data = await response.json();
+      const list = data.data || [];
+      return list.map((item: { rid: number, name: string, artist: string, pic: string, url: string }) => ({
+        id: item.rid.toString(),
+        title: item.name,
+        url: item.url,
+        singer: item.artist,
+        cover: item.pic,
+        tags: ['酷我'],
+      })) as Song[];
+    } catch (error) {
+      console.log('query netease err' + error);
+    }
+    return [] as Song[];
+  }
+
   public async query(keyword: string): Promise<Song[]> {
     console.log(`query keyword: ${keyword}`);
+    // const result = await this.getKuwoSongs(keyword);
+    // console.log(result);
     const results = await Promise.all([
       this.getNeteaseSongs(keyword),
       this.getMiguSongs(keyword),
+      this.getKuwoSongs(keyword),
     ]);
 
     const allSongs = results.flat();
