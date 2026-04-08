@@ -4,7 +4,7 @@ import { Song } from './types';
 
 class Search {
 
-  private baseUrl: string = 'https://api.xcvts.cn/api/music/migu';
+  private miguUrl: string = 'https://api.xcvts.cn/api/music/migu';
 
   private static instance: Search | null = null;
 
@@ -19,17 +19,17 @@ class Search {
     return Search.instance;
   }
 
-  public async getMiguSongNames(keyword: string, limit: number = 10): Promise<string[]> {
+  public async getMiguSongNames(keyword: string, limit: number = 20): Promise<string[]> {
     try {
-      const url = `${this.baseUrl}?gm=${encodeURIComponent(keyword)}&n=&num=10&type=json`;
+      const url = `${this.miguUrl}?gm=${encodeURIComponent(keyword)}&n=&num=10&type=json`;
       const response = await fetch(url);
       if (!response.ok) {
         throw new Error(`network error: ${response.status}`);
       }
       const data = await response.json();
       const list = data.data || [];
-      return list.map((item: {n:number, title:string, singer: string})=>{return item.title;}).slice(0, limit) as string[];
-
+      const allTitles: string[] = list.map((item: { n: number, title: string, singer: string }) => item.title);
+      return [...new Set(allTitles)].slice(0, limit);
     } catch (error) {
       console.log('get songs err' + error);
     }
@@ -48,7 +48,7 @@ class Search {
     };
 
     try {
-      const detailUrl = `${this.baseUrl}?gm=${encodeURIComponent(name)}&n=1&num=20&type=json`;
+      const detailUrl = `${this.miguUrl}?gm=${encodeURIComponent(name)}&n=1&num=20&type=json`;
       const res = await fetch(detailUrl);
       const detail: Detail = await res.json();
       if (detail.code !== 200) {
