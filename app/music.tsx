@@ -14,6 +14,7 @@ import {
 // 导入最新的 expo-audio
 import { useAudioPlayer, useAudioPlayerStatus } from 'expo-audio';
 import Search from './search';
+import TagList from './taglist';
 import { Song } from './types';
 
 
@@ -140,6 +141,8 @@ const MusicApp: React.FC = () => {
               </Text>
             </View>
 
+            <TagList tags={item.tags} />
+
             <TouchableOpacity style={styles.playButton} onPress={() => handlePlay(item)}>
               <Text style={{ color: '#fff' }}>播放</Text>
             </TouchableOpacity>
@@ -235,6 +238,7 @@ const styles = StyleSheet.create({
   textContainer: {
     flex: 1, // 关键：占据中间所有空间
     justifyContent: 'center',
+    // marginRight: 8,
   },
   songTitle: {
     fontSize: 16,

@@ -17,6 +17,7 @@ http://localhost:8081
 ## Build web output
 
 ```bash
+npx expo export --platform web
 
 ```
 

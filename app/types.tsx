@@ -4,6 +4,7 @@ export interface Song {
   url: string;
   singer?: string;
   cover?: string;
+  tags?: string[];
 };
 
 export default {};

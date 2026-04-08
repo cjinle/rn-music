@@ -61,6 +61,7 @@ class Search {
         url: detail.music_url,
         singer: detail.singer,
         cover: detail.cover,
+        tags: ['咪咕'],
       } as Song;
     } catch (error) {
       console.log(`get song ${name} err`, error);
@@ -79,15 +80,48 @@ class Search {
       const results = await Promise.all(songPromises);
       return results.filter((s): s is Song => s !== null);
     } catch (error) {
-      console.log('query err' + error);
+      console.log('query migu err' + error);
     }
 
     return [] as Song[];
   }
 
+  public async getNeteaseSongs(keyword: string): Promise<Song[]> {
+    try {
+      const url = `https://api.vkeys.cn/v2/music/netease?word=${encodeURIComponent(keyword)}&page=1&num=10`;
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error(`network error: ${response.status}`);
+      }
+      const data = await response.json();
+      const list = data.data || [];
+      return list.map((item: {id: number, song: string, singer: string, cover: string}) => ({
+        id: item.id.toString(),
+        title: item.song,
+        url: `https://api.qijieya.cn/meting/?server=netease&type=url&id=${item.id}`,
+        singer: item.singer,
+        cover: item.cover,
+        tags: ['网易云'],
+      })) as Song[];
+    } catch (error) {
+      console.log('query netease err' + error);
+    }
+    return [] as Song[];
+  }
+
   public async query(keyword: string): Promise<Song[]> {
     console.log(`query keyword: ${keyword}`);
-    return this.getMiguSongs(keyword);
+    const results = await Promise.all([
+      this.getNeteaseSongs(keyword),
+      this.getMiguSongs(keyword),
+    ]);
+
+    const allSongs = results.flat();
+    return allSongs.sort(() => Math.random() - 0.5);
+    // return this.getNeteaseSongs(keyword);
+    // const neteaseResult = await this.getNeteaseSongs(keyword);
+    // console.log(neteaseResult);
+    // return this.getMiguSongs(keyword);
   }
 }
 
